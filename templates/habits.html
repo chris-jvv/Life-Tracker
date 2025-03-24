@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="container mx-auto py-8 px-4">
+        <!-- Header -->
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-8">Weekly Habit Tracker</h1>
+
+        <!-- Form for Adding Habits -->
+        <form action="{{ url_for('add_habit') }}" method="post" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <input type="text" name="name" placeholder="Add new habit" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200">
+            <input type="submit" value="Add" class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200">
+        </form>
+
+        <!-- Habit Tracker Table -->
+        <div class="overflow-x-auto rounded-lg shadow">
+            <table class="w-full bg-white border-collapse">
+                <thead class="bg-blue-600 text-white">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Habit</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Mon</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Tue</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Wed</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Thu</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Fri</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Sat</th>
+                        <th class="py-3 px-4 text-center hidden sm:table-cell">Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for habit in habits %}
+                      <tr class="border-b hover:bg-gray-100">
+                          <td class="py-4 px-6">{{ habit.name }}</td>
+                          {% for habit_day in habit.habit_days %}
+                              <td class="py-4 px-6 text-center">
+                                  {% if habit_day.completed %}
+                                      <input type="checkbox" checked class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" onclick="window.location.href='{{ url_for('mark_habit_day', habit_id=habit.id, day=habit_day.day) }}'">
+                                  {% else %}
+                                      <input type="checkbox" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" onclick="window.location.href='{{ url_for('mark_habit_day', habit_id=habit.id, day=habit_day.day) }}'">
+                                  {% endif %}
+                              </td>
+                          {% endfor %}
+                         
+                      </tr>
+                  {% endfor %}
+              </tbody>
+              
+              
+            </table>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="flex justify-center mt-6">
+            <button class="w-full sm:w-auto px-6 py-2 bg-red-600 text-white font-medium rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
+                onclick="if (confirm('Are you sure you want to reset your habits?')) window.location.href='{{ url_for('reset_habits') }}'">
+                Reset Habits
+            </button>
+        </div>
+    </div>
+</body>
+</html>

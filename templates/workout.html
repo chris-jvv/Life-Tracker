@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .add-workout-form {
+            background-color: white;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .add-workout-form h2 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .add-workout-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .add-workout-form input,
+        .add-workout-form select,
+        .add-workout-form button {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .add-workout-form button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .add-workout-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Container Styles */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        /* History Table Styles */
+        .workout-entry {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .workout-entry:last-child {
+            border-bottom: none;
+        }
+
+        .workout-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #7f8c8d;
+        }
+
+        /* Personal Bests Styles */
+        .pb-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pb-exercise {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .pb-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .pb-metric {
+            text-align: center;
+        }
+
+        .pb-metric span {
+            display: block;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        /* === CHART FIXES === */
+        .chart-card {
+            grid-column: 1 / -1;
+            height: 500px; /* Fixed container height */
+            overflow: hidden;
+        }
+
+        #trendChart {
+            height: 400px !important; /* Fixed canvas height */
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-card {
+                order: 3;
+                height: 400px; /* Adjusted for mobile */
+            }
+            
+            #trendChart {
+                height: 300px !important; /* Smaller on mobile */
+            }
+            
+            .workout-details {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Workout Tracker</h1>
+    </header>
+
+    <div class="add-workout-form">
+        <h2>Add New Workout</h2>
+        <form method="POST">
+            <label for="exercise">Exercise</label>
+            <select name="exercise" id="exercise" required>
+                <option value="">Select Exercise</option>
+                {% for exercise in exercises %}
+                <option value="{{ exercise }}">{{ exercise.title() }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" name="weight" step="0.1" required>
+
+            <label for="reps">Reps</label>
+            <input type="number" id="reps" name="reps" required>
+
+            <button type="submit">Save Workout</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <!-- Personal Bests Card -->
+        <div class="card">
+            <h2>Personal Bests</h2>
+            {% if max_weights %}
+                {% for exercise in exercises %}
+                    {% if max_weights[exercise] %}
+                    <div class="pb-card">
+                        <div class="pb-exercise">{{ exercise.title() }}</div>
+                        <div class="pb-details">
+                            <div class="pb-metric">
+                                <span>{{ max_weights[exercise].weight }} kg</span>
+                                Max Weight
+                            </div>
+                            <div class="pb-metric">
+                                <span>{{ max_weights[exercise].reps }}</span>
+                                Reps
+                            </div>
+                            <div class="pb-metric">
+                                <span>{{ max_weights[exercise].date }}</span>
+                                Date
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No personal bests recorded yet</p>
+            {% endif %}
+        </div>
+
+        <!-- Workout History Card -->
+        <div class="card">
+            <h2>Workout History</h2>
+            {% if workouts %}
+                {% for workout in workouts %}
+                <div class="workout-entry">
+                    <div class="workout-details">
+                        <div>
+                            <div class="detail-label">Date</div>
+                            {{ workout.date }}
+                        </div>
+                        <div>
+                            <div class="detail-label">Exercise</div>
+                            {{ workout.exercise.title() }}
+                        </div>
+                        <div>
+                            <div class="detail-label">Weight</div>
+                            {{ workout.weight }} kg
+                        </div>
+                        <div>
+                            <div class="detail-label">Reps</div>
+                            {{ workout.reps }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No workouts recorded yet</p>
+            {% endif %}
+        </div>
+
+        <!-- Full-width Chart Card -->
+        <div class="card chart-card">
+            <h2>Performance Trend</h2>
+            <label for="trend-exercise">Select Exercise:</label>
+            <select id="trend-exercise">
+                <option value="">Select Exercise</option>
+                {% for exercise in exercises %}
+                <option value="{{ exercise }}">{{ exercise.title() }}</option>
+                {% endfor %}
+            </select>
+            <canvas id="trendChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+        document.getElementById("trend-exercise").addEventListener("change", function() {
+            const exercise = this.value;
+            if (!exercise) return;
+        
+            fetch(`/trending?exercise=${exercise}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Fetched Data:", data);
+                    
+                    const ctx = document.getElementById('trendChart').getContext('2d');
+                    
+                    if (window.trendChart instanceof Chart) {
+                        window.trendChart.destroy();
+                    }
+
+                    window.trendChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            datasets: [{
+                                label: `${exercise} 1RM Progress`,
+                                data: data.map(entry => ({
+                                    x: entry.date,
+                                    y: entry.score
+                                })),
+                                borderColor: '#3498db',
+                                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // Critical for fixed height
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time: { 
+                                        parser: 'yyyy-MM-dd HH:mm:ss',
+                                        tooltipFormat: 'MMM d, yyyy',
+                                        unit: 'day'
+                                    },
+                                    title: { display: true, text: 'Date' }
+                                },
+                                y: { 
+                                    title: { display: true, text: '1RM Score' },
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

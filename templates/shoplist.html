@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .add-item-form {
+            background-color: white;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .add-item-form h3 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .add-item-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .add-item-form input,
+        .add-item-form select,
+        .add-item-form button {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .add-item-form button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-item-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Items Container */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Item Card Styles */
+        .item-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .item-quantity {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            display: inline-block;
+            background-color: #f5f5f5;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .item-actions a {
+            background-color: #3498db;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .item-actions a:hover {
+            background-color: rgb(46, 186, 204);
+        }
+
+        @media (max-width: 768px) {
+            .item-actions {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .item-actions a {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shopping List</h1>
+    </header>
+
+    <div class="add-item-form">
+        <h3>Add New Item</h3>
+        <form method="POST" action="/add">
+            <label for="name">Item Name</label>
+            <input type="text" name="name" placeholder="Item name" required>
+            
+            <label for="category">Category</label>
+            <select name="category" required>
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" value="1" min="1">
+            
+            <button type="submit">Add Item</button>
+        </form>
+    </div>
+
+    <div class="container">
+        {% for category in categories %}
+        <div class="category">
+            <h3>{{ category }}</h3>
+            {% for item in shopping_list %}
+                {% if item.category == category %}
+                    <div class="item-card">
+                        <div class="item-name">{{ item.name }}</div>
+                        <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+                        <div class="item-footer">
+                            <div class="item-actions">
+                                <a href="{{ url_for('delete_item', item_id=item.id) }}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

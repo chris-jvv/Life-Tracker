@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "Change Bedding",
+        "last_done": "2025-02-12 17:43:33.421585",
+        "allocated_days": 14,
+        "status": "Overdue"
+    },
+    {
+        "id": 4,
+        "name": "Change Towels",
+        "last_done": "2025-03-24 18:32:17.996539",
+        "allocated_days": 7,
+        "status": "On Time"
+    },
+    {
+        "id": 4,
+        "name": "Deep Clean Bathroom",
+        "last_done": "2025-01-01 00:00:00",
+        "allocated_days": 30,
+        "status": "Overdue"
+    },
+    {
+        "id": 5,
+        "name": "Dentist",
+        "last_done": "2024-11-01 00:00:00",
+        "allocated_days": 183,
+        "status": "On Time"
+    },
+    {
+        "id": 6,
+        "name": "Wash Car",
+        "last_done": "2025-03-12 11:32:46.115473",
+        "allocated_days": 14,
+        "status": "Near Due"
+    },
+    {
+        "id": 7,
+        "name": "Renew Car License",
+        "last_done": "2025-03-12 11:32:36.816465",
+        "allocated_days": 365,
+        "status": "On Time"
+    },
+    {
+        "id": 7,
+        "name": "Do Laundry",
+        "last_done": "2025-02-19 18:26:07.269926",
+        "allocated_days": 14,
+        "status": "Overdue"
+    },
+    {
+        "id": 8,
+        "name": "Reapply for Credit Card",
+        "last_done": "2025-03-24 18:32:09.323608",
+        "allocated_days": 365,
+        "status": "On Time"
+    }
+]

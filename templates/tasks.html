@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .add-task-form {
+            background-color: white;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .add-task-form h3 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .add-task-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .add-task-form input,
+        .add-task-form button {
+            width: 95%;
+            padding: 10px;
+            align: center;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .add-task-form button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-task-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Task Cards Container */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Task Card Styles */
+        .task-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            align-text: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .status {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .status.on-time {
+            color: #2c662d;
+            background-color: #e0f7e0;
+        }
+
+        .status.near-due {
+            color: #946200;
+            background-color: #fff3cd;
+        }
+
+        .status.overdue {
+            color: #721c24;
+            background-color: #f8d7da;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .days-left {
+            color: #555;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px; /* Spacing between buttons */
+            justify-content: flex-end; /* Align buttons to the right by default */
+        }
+        
+        .task-actions button {
+            background-color: #3498db;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .task-actions button:hover {
+            background-color:rgb(46, 186, 204);
+        }
+        
+        @media (max-width: 768px) {
+            .task-actions {
+                flex-direction: column; /* Stack buttons vertically on smaller screens */
+                gap: 10px; /* Space between buttons */
+                align-items: stretch; /* Ensure full-width buttons */
+            }
+        
+            .task-actions button {
+                width: 100%; /* Make buttons full-width */
+            }
+        }
+        
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allows wrapping for mobile */
+        }        
+            
+
+            .task-actions button {
+                width: 100%; /* Full width buttons on smaller screens */
+                margin: 0;
+            }
+
+            .days-left {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Task Management</h1>
+    </header>
+
+    <div class="add-task-form">
+        <h3>Add New Task</h3>
+        <form action="/add_task" method="POST">
+            <label for="task_name">Task Name</label>
+            <input type="text" name="task_name" placeholder="Task Name" required>
+            
+            <label for="allocated_days">Allocated Days</label>
+            <input type="number" name="allocated_days" placeholder="Days for Task" required>
+            
+            <label for="custom_last_done_date">Custom Last Done Date</label>
+            <input type="date" name="custom_last_done_date" id="custom_last_done_date">
+            <input type="checkbox" name="custom_last_done" id="custom_last_done">
+            
+            
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div class="container">
+        {% for task in tasks %}
+        <div class="task-card {{ task.status|lower|replace(' ', '-') }}">
+            <div class="task-name">{{ task.name }}</div>
+            <div class="status {{ task.status|lower|replace(' ', '-') }}">{{ task.status }}</div>
+            <div class="task-footer">
+                <div class="days-left">Days Left: {{ calculate_days_left(task.last_done, task.allocated_days) }}</div>
+                <div class="task-actions">
+                    <a href="/complete_task/{{ task.id }}">
+                        <button>Complete</button>
+                    </a>
+                    <a href="/delete_task/{{ task.id }}">
+                        <button>Delete</button>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

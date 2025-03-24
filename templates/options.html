@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+
+        .options {
+            margin: 10px auto;
+            display: block;
+            justify-content: center;
+            gap: 10px;
+            
+        }
+        /* Container to hold the option cards */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Flexible grid */
+            gap: 15px; /* Space between the cards */
+            padding: 15px; /* Add some padding around the container */
+            max-width: 400px; /* Limit container width on larger screens */
+            margin: 0 auto; /* Center the container */
+        }
+        
+        /* Styling for individual option cards */
+        .option-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+            padding: 20px;
+            text-align: center; /* Center the content */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+        }
+        
+        /* Hover effect for option cards */
+        .option-card:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+        }
+        
+        /* Headings inside the cards */
+        .option-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50; /* Dark color for the title */
+        }
+        
+        /* Links inside the cards */
+        .option-card a {
+            display: inline-block; /* Makes links act like buttons */
+            text-decoration: none; /* Remove underline */
+            color: white;
+            background-color: #3498db; /* Button-like blue color */
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Hover effect for links */
+        .option-card a:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .option-card h2 {
+                font-size: 1rem; /* Slightly smaller title on smaller screens */
+            }
+        
+            .option-card a {
+                font-size: 0.85rem; /* Adjust button size for mobile */
+                padding: 8px 12px; /* Smaller padding on mobile */
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Choose an Option</h1>
+    </header>
+    <div class="container">
+        <div class="option-card">
+            <h2>Task Management</h2>
+            <a href="/tasks">Go to Tasks</a>
+        </div>
+        <div class="option-card">
+            <h2>Shopping List</h2>
+            <a href="{{ url_for('shop_index') }}">Shopping List</a>
+        </div>
+        <div class="option-card">
+            <h2>Workout Tracker</h2>
+            <a href="{{ url_for('workout_index') }}">Workout Tracker</a>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,68 @@
+[
+  {
+    "exercise": "overhead press",
+    "weight": 30.0,
+    "reps": 6,
+    "date": "2025-01-29 17:39:41"
+  },
+  {
+    "exercise": "bicep curls",
+    "weight": 12.0,
+    "reps": 11,
+    "date": "2025-01-29 17:43:05"
+  },
+  {
+    "exercise": "push ups",
+    "weight": 0.0,
+    "reps": 15,
+    "date": "2025-01-31 11:53:05"
+  },
+  {
+    "exercise": "overhead press",
+    "weight": 30.0,
+    "reps": 7,
+    "date": "2025-02-03 17:38:16"
+  },
+  {
+    "exercise": "push ups",
+    "weight": 0.0,
+    "reps": 17,
+    "date": "2025-02-03 17:44:35"
+  },
+  {
+    "exercise": "pull ups",
+    "weight": 0.0,
+    "reps": 9,
+    "date": "2025-02-05 16:36:45"
+  },
+  {
+    "exercise": "overhead press",
+    "weight": 30.0,
+    "reps": 8,
+    "date": "2025-02-10 17:48:07"
+  },
+  {
+    "exercise": "push ups",
+    "weight": 0.0,
+    "reps": 20,
+    "date": "2025-02-10 17:50:18"
+  },
+  {
+    "exercise": "bicep curls",
+    "weight": 12.0,
+    "reps": 9,
+    "date": "2025-02-12 18:43:12"
+  },
+  {
+    "exercise": "push ups",
+    "weight": 0.0,
+    "reps": 20,
+    "date": "2025-03-11 18:51:49"
+  },
+  {
+    "exercise": "overhead press",
+    "weight": 20.0,
+    "reps": 15,
+    "date": "2025-03-18 12:24:36"
+  }
+]
